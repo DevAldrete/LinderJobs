@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/common/logo';
 import { Settings, User } from 'lucide-react';
+import { ThemeToggle } from '@/components/common/theme-toggle';
 
 export function AppHeader() {
   // In a real app, auth state would determine which links to show.
@@ -14,10 +15,14 @@ export function AppHeader() {
       <div className="container flex h-16 items-center justify-between">
         <Logo />
         <nav className="flex items-center space-x-2">
+          <Button variant="ghost" asChild>
+            <Link href="/pricing">Pricing</Link>
+          </Button>
+          <ThemeToggle />
           {isAuthenticated ? (
             <>
               <Button variant="ghost" size="icon" asChild>
-                <Link href="/(app)/settings"> {/* Assuming settings is for authenticated users */}
+                <Link href="/(app)/settings"> 
                   <User className="h-5 w-5" />
                   <span className="sr-only">Profile</span>
                 </Link>

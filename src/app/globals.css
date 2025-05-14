@@ -5,43 +5,43 @@
 @layer base {
   :root {
     --background: 0 0% 100%; /* white */
-    --foreground: 0 0% 0%; /* black */
+    --foreground: 0 0% 3.9%; /* almost black */
 
     --card: 0 0% 100%; /* white */
-    --card-foreground: 0 0% 0%; /* black */
+    --card-foreground: 0 0% 3.9%; /* almost black */
 
     --popover: 0 0% 100%; /* white */
-    --popover-foreground: 0 0% 0%; /* black */
+    --popover-foreground: 0 0% 3.9%; /* almost black */
 
-    --primary: 0 0% 0%; /* black */
-    --primary-foreground: 0 0% 100%; /* white */
+    --primary: 222.2 47.4% 11.2%; /* dark blue */
+    --primary-foreground: 0 0% 98%; /* very light grey / almost white */
 
-    --secondary: 0 0% 95%; /* light grey */
-    --secondary-foreground: 0 0% 0%; /* black */
+    --secondary: 0 0% 96.1%; /* light grey */
+    --secondary-foreground: 0 0% 9%; /* dark grey */
 
-    --muted: 0 0% 90%; /* lighter grey */
-    --muted-foreground: 0 0% 30%; /* dark grey */
+    --muted: 0 0% 96.1%; /* light grey */
+    --muted-foreground: 0 0% 45.1%; /* medium grey */
 
-    --accent: 300 100% 50%; /* magenta */
-    --accent-foreground: 0 0% 100%; /* white */
+    --accent: 300 76% 52%; /* magenta/purple */
+    --accent-foreground: 0 0% 98%; /* very light grey / almost white */
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 85%; /* grey for borders */
-    --input: 0 0% 85%; /* border for inputs */
-    --ring: 300 100% 50%; /* magenta for focus rings */
+    --border: 0 0% 89.8%; /* light grey for borders */
+    --input: 0 0% 89.8%; /* border for inputs */
+    --ring: 222.2 84% 4.9%; /* dark blue for focus rings */
 
     --radius: 0.5rem;
 
-    /* Chart colors (can be kept or adjusted if charts are used) */
+    /* Chart colors */
     --chart-1: 12 76% 61%;
     --chart-2: 173 58% 39%;
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
 
-    /* Sidebar specific colors (can be adjusted if sidebar is used, otherwise defaults are fine) */
+    /* Sidebar specific colors */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -53,33 +53,33 @@
   }
 
   .dark {
-    --background: 0 0% 0%; /* black */
-    --foreground: 0 0% 100%; /* white */
+    --background: 0 0% 3.9%; /* almost black */
+    --foreground: 0 0% 98%; /* very light grey / almost white */
 
-    --card: 0 0% 5%; /* very dark grey */
-    --card-foreground: 0 0% 100%; /* white */
+    --card: 0 0% 3.9%; /* almost black */
+    --card-foreground: 0 0% 98%; /* very light grey / almost white */
 
-    --popover: 0 0% 5%; /* very dark grey */
-    --popover-foreground: 0 0% 100%; /* white */
+    --popover: 0 0% 3.9%; /* almost black */
+    --popover-foreground: 0 0% 98%; /* very light grey / almost white */
 
-    --primary: 0 0% 100%; /* white */
-    --primary-foreground: 0 0% 0%; /* black */
+    --primary: 0 0% 98%; /* very light grey / almost white */
+    --primary-foreground: 222.2 47.4% 11.2%; /* dark blue */
 
-    --secondary: 0 0% 15%; /* dark grey */
-    --secondary-foreground: 0 0% 100%; /* white */
+    --secondary: 0 0% 14.9%; /* very dark grey */
+    --secondary-foreground: 0 0% 98%; /* very light grey / almost white */
 
-    --muted: 0 0% 20%; /* slightly lighter dark grey */
-    --muted-foreground: 0 0% 70%; /* light grey */
+    --muted: 0 0% 14.9%; /* very dark grey */
+    --muted-foreground: 0 0% 63.9%; /* medium-light grey */
 
-    --accent: 300 100% 50%; /* magenta */
-    --accent-foreground: 0 0% 100%; /* white */
+    --accent: 300 76% 62%; /* lighter magenta/purple for dark mode */
+    --accent-foreground: 0 0% 98%; /* very light grey / almost white */
 
-    --destructive: 0 70% 50%;
+    --destructive: 0 72.2% 50.6%;
     --destructive-foreground: 0 0% 98%;
 
-    --border: 0 0% 25%; /* grey for borders in dark mode */
-    --input: 0 0% 25%; /* border for inputs in dark mode */
-    --ring: 300 100% 50%; /* magenta */
+    --border: 0 0% 14.9%; /* very dark grey for borders */
+    --input: 0 0% 14.9%; /* border for inputs in dark mode */
+    --ring: 0 0% 83.1%; /* light grey for focus rings */
 
     /* Chart colors for dark mode */
     --chart-1: 220 70% 50%;
@@ -89,14 +89,14 @@
     --chart-5: 340 75% 55%;
     
     /* Sidebar specific colors for dark mode */
-    --sidebar-background: 0 0% 5%; /* very dark grey */
-    --sidebar-foreground: 0 0% 95%; /* light grey */
-    --sidebar-primary: 300 100% 50%; /* magenta as primary for sidebar in dark? or keep consistent */
+    --sidebar-background: 0 0% 5%; 
+    --sidebar-foreground: 0 0% 95%; 
+    --sidebar-primary: 300 76% 62%; 
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 0 0% 15%; /* dark grey for accent */
+    --sidebar-accent: 0 0% 15%; 
     --sidebar-accent-foreground: 0 0% 95%;
     --sidebar-border: 0 0% 20%;
-    --sidebar-ring: 300 100% 50%;
+    --sidebar-ring: 300 76% 62%;
   }
 }
 
@@ -106,6 +106,18 @@
   }
   body {
     @apply bg-background text-foreground;
-    /* Removed font-family here to allow Next/font from layout.tsx to take precedence */
+  }
+}
+
+@layer utilities {
+  .highlight-text {
+    /* For potential text spotlight/glow effects */
+    text-shadow: 0 0 10px hsl(var(--accent) / 0.7), 0 0 20px hsl(var(--accent) / 0.5);
+  }
+  .animate-pulse-slow {
+    animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  .animate-pulse-slower {
+    animation: pulse 5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
   }
 }
