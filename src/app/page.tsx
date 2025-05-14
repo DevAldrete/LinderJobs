@@ -169,7 +169,7 @@ export default function HomePage() {
               <Link href="/signup">Get Started Free</Link>
             </Button>
             <Button size="lg" variant="outline" asChild className="shadow-md hover:shadow-lg transition-all transform hover:scale-105 px-10 py-7 text-lg border-2">
-              <Link href="/(app)/discover">Explore Jobs <ChevronRight className="ml-2 h-5 w-5"/></Link>
+              <Link href="/discover">Explore Jobs <ChevronRight className="ml-2 h-5 w-5"/></Link>
             </Button>
           </div>
         </section>

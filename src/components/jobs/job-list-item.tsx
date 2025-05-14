@@ -84,7 +84,7 @@ export function JobListItem({ job, onDelete }: JobListItemProps) {
         </div>
         <div className="flex space-x-2 w-full sm:w-auto">
           <Button variant="outline" size="sm" asChild className="flex-1 sm:flex-none shadow-sm hover:shadow-md">
-            <Link href={`/(app)/jobs/${job.id}/edit`}>
+            <Link href={`/jobs/${job.id}/edit`}> {/* Corrected path */}
               <Edit3 className="w-4 h-4 mr-1.5" /> Edit
             </Link>
           </Button>

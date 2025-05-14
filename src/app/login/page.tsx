@@ -50,7 +50,7 @@ export default function LoginPage() {
     });
     // Simulate API call and redirect
     setTimeout(() => {
-      router.push("/(app)/discover");
+      router.push("/discover"); // Corrected path
     }, 1500);
   }
 

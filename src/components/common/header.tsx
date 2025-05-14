@@ -22,13 +22,13 @@ export function AppHeader() {
           {isAuthenticated ? (
             <>
               <Button variant="ghost" size="icon" asChild>
-                <Link href="/(app)/settings"> 
+                <Link href="/settings"> 
                   <User className="h-5 w-5" />
                   <span className="sr-only">Profile</span>
                 </Link>
               </Button>
               <Button variant="ghost" size="icon" asChild>
-                <Link href="/(app)/settings">
+                <Link href="/settings">
                   <Settings className="h-5 w-5" />
                   <span className="sr-only">Settings</span>
                 </Link>

@@ -29,7 +29,7 @@ export function MatchListItem({ match }: MatchListItemProps) {
 
 
   return (
-    <Link href={`/(app)/chat/${match.id}`} legacyBehavior>
+    <Link href={`/chat/${match.id}`} legacyBehavior> {/* Corrected path */}
       <a className="flex items-center space-x-4 p-4 rounded-lg hover:bg-secondary transition-colors cursor-pointer border-b last:border-b-0">
         <Avatar className="h-12 w-12">
           <AvatarImage src={match.userImageUrl} alt={match.userName} data-ai-hint="person avatar" />

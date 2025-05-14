@@ -73,7 +73,7 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
       title: isEditing ? "Job Updated!" : "Job Posted!",
       description: `Job "${data.title}" has been successfully ${isEditing ? 'updated' : 'posted'}.`,
     });
-    router.push("/(app)/jobs"); // Navigate to job list
+    router.push("/jobs"); // Corrected path: Navigate to job list
     router.refresh(); // Force refresh to show updated list if data was server-fetched
   }
 

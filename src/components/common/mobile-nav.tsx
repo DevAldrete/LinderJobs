@@ -15,12 +15,12 @@ interface NavItem {
 }
 
 const navItems: NavItem[] = [
-  { href: "/(app)/discover", label: "Discover", icon: Flame, role: "seeker" },
-  { href: "/(app)/candidates", label: "Candidates", icon: Flame, role: "recruiter" },
-  { href: "/(app)/matches", label: "Matches", icon: Users, role: "any" },
-  { href: "/(app)/chat", label: "Chat", icon: MessageSquare, role: "any" }, // Main chat list, specific chats will be /chat/[id]
-  { href: "/(app)/jobs", label: "My Jobs", icon: Briefcase, role: "recruiter" },
-  { href: "/(app)/settings", label: "Profile", icon: UserCircle2, role: "any" },
+  { href: "/discover", label: "Discover", icon: Flame, role: "seeker" },
+  { href: "/candidates", label: "Candidates", icon: Flame, role: "recruiter" },
+  { href: "/matches", label: "Matches", icon: Users, role: "any" },
+  { href: "/chat", label: "Chat", icon: MessageSquare, role: "any" }, // Main chat list, specific chats will be /chat/[id]
+  { href: "/jobs", label: "My Jobs", icon: Briefcase, role: "recruiter" },
+  { href: "/settings", label: "Profile", icon: UserCircle2, role: "any" },
 ];
 
 // Simulate user role - in a real app, this would come from auth context
@@ -35,8 +35,8 @@ export function MobileNav() {
   });
 
   // Prioritize key actions for the limited slots, ensuring 'Profile/Settings' is usually last or accessible
-  const mainItems = filteredNavItems.filter(item => item.href !== "/(app)/settings");
-  const settingsItem = filteredNavItems.find(item => item.href === "/(app)/settings");
+  const mainItems = filteredNavItems.filter(item => item.href !== "/settings");
+  const settingsItem = filteredNavItems.find(item => item.href === "/settings");
   
   let displayItems = mainItems.slice(0,3); // take first 3 main items
   if (settingsItem) {
@@ -58,9 +58,9 @@ export function MobileNav() {
          `grid-cols-${displayItems.length}`
       )}>
         {displayItems.map((item) => { 
-          const isActive = pathname === item.href || (item.href !== "/(app)/settings" && item.href !== "/(app)/chat" && pathname.startsWith(item.href));
+          const isActive = pathname === item.href || (item.href !== "/settings" && item.href !== "/chat" && pathname.startsWith(item.href));
           // Special handling for /chat and /chat/[id] to make "Chat" active for both
-          const isChatActive = item.href === "/(app)/chat" && (pathname === "/(app)/chat" || pathname.startsWith("/(app)/chat/"));
+          const isChatActive = item.href === "/chat" && (pathname === "/chat" || pathname.startsWith("/chat/"));
           const finalIsActive = isChatActive || isActive;
 
           return (

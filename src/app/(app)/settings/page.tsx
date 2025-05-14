@@ -23,7 +23,7 @@ export default function SettingsPage() {
       title: "Logged Out",
       description: "You have been successfully logged out.",
     });
-    router.push("/login");
+    router.push("/login"); // Corrected path
   };
 
   return (

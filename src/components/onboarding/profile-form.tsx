@@ -64,7 +64,7 @@ export function ProfileForm() {
     
     if (!isSettingsPage) {
       // If on onboarding, navigate to discover page
-      router.push("/(app)/discover"); 
+      router.push("/discover"); // Corrected path
     }
     // If on settings page, do nothing or refresh if needed
   }

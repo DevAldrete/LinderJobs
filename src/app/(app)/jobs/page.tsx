@@ -39,7 +39,7 @@ export default function JobManagementPage() {
           <h1 className="text-3xl font-bold">Manage Job Postings</h1>
         </div>
         <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 w-full sm:w-auto shadow-md hover:shadow-lg transition-shadow">
-          <Link href="/(app)/jobs/create">
+          <Link href="/jobs/create"> {/* Corrected path */}
             <PlusCircle className="mr-2 h-5 w-5" /> Create New Job
           </Link>
         </Button>
