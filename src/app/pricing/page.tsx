@@ -8,6 +8,7 @@ import { CheckCircle, Sparkles, Briefcase, Users } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
+import Link from 'next/link'; // Added import
 
 const pricingTiers = [
   {
@@ -159,3 +160,4 @@ export default function PricingPage() {
     </div>
   );
 }
+
