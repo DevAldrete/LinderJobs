@@ -1,29 +1,35 @@
 
 "use client";
 
-import { ProfileForm } from "@/components/onboarding/profile-form"; 
-// Re-using ProfileForm for settings for simplicity. 
-// In a real app, this might be a more detailed settings page.
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { LogOut, Bell, Shield } from "lucide-react";
+import { LogOut, Bell, Shield, User } from "lucide-react"; // Added User icon
 import { Separator } from "@/components/ui/separator";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/contexts/AuthContext"; // Added useAuth
+import Link from "next/link"; // Added Link
 
 export default function SettingsPage() {
-  // This would typically load user data to pre-fill the ProfileForm
-  // const user = useUser(); // example custom hook
+  const { signOut, user } = useAuth(); // Used useAuth
   const router = useRouter();
   const { toast } = useToast();
 
-  const handleLogout = () => {
-    // Simulate logout
-    toast({
-      title: "Logged Out",
-      description: "You have been successfully logged out.",
-    });
-    router.push("/login"); // Corrected path
+  const handleLogout = async () => {
+    const { error } = await signOut();
+    if (error) {
+      toast({
+        title: "Logout Failed",
+        description: error.message,
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Logged Out",
+        description: "You have been successfully logged out.",
+      });
+      router.push("/login");
+    }
   };
 
   return (
@@ -31,9 +37,22 @@ export default function SettingsPage() {
       <h1 className="text-3xl font-bold">Settings</h1>
       
       <section>
-        <h2 className="text-xl font-semibold mb-4">Profile Information</h2>
-        {/* ProfileForm already uses a Card with shadow-xl */}
-        <ProfileForm /> 
+        <Card className="shadow-xl hover:shadow-2xl transition-shadow duration-300">
+          <CardHeader>
+            <CardTitle>Profile Information</CardTitle>
+            <CardDescription>Manage your personal details and preferences.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground mb-4">
+              Your profile details, such as name, bio, skills, and profile picture, can be managed on your dedicated profile page.
+            </p>
+            <Button asChild variant="outline" className="shadow-sm hover:shadow-md">
+              <Link href="/profile">
+                <User className="mr-2 h-4 w-4" /> Go to My Profile
+              </Link>
+            </Button>
+          </CardContent>
+        </Card>
       </section>
 
       <Separator />
@@ -58,7 +77,7 @@ export default function SettingsPage() {
             </div>
           </CardContent>
           <CardFooter className="border-t pt-6">
-             <Button variant="destructive" onClick={handleLogout} className="w-full sm:w-auto shadow-md hover:shadow-lg">
+             <Button variant="destructive" onClick={handleLogout} className="w-full sm:w-auto shadow-md hover:shadow-lg" disabled={!user}>
               <LogOut className="mr-2 h-4 w-4" /> Log Out
             </Button>
           </CardFooter>

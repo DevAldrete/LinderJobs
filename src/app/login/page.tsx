@@ -18,9 +18,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react'; // Added useState
 import { gsap } from 'gsap';
 import { Logo } from '@/components/common/logo';
+import { useAuth } from '@/contexts/AuthContext'; // Added useAuth
+import { Loader2 } from 'lucide-react'; // Added Loader2
 
 const LoginFormSchema = z.object({
   email: z.string().email("Invalid email address.").min(1, "Email is required."),
@@ -33,6 +35,8 @@ export default function LoginPage() {
   const { toast } = useToast();
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
+  const { signInWithEmail, user, loading: authLoading } = useAuth(); // Used useAuth
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(LoginFormSchema),
@@ -42,16 +46,33 @@ export default function LoginPage() {
     },
   });
 
-  function onSubmit(data: LoginFormValues) {
-    console.log(data);
-    toast({
-      title: "Login Successful!",
-      description: "Redirecting you to the dashboard...",
+  useEffect(() => {
+    if (user && !authLoading) {
+      router.push("/discover"); // Redirect if already logged in
+    }
+  }, [user, authLoading, router]);
+
+  async function onSubmit(data: LoginFormValues) {
+    setIsSubmitting(true);
+    const { error } = await signInWithEmail({
+      email: data.email,
+      password: data.password,
     });
-    // Simulate API call and redirect
-    setTimeout(() => {
-      router.push("/discover"); // Corrected path
-    }, 1500);
+    setIsSubmitting(false);
+
+    if (error) {
+      toast({
+        title: "Login Failed",
+        description: error.message || "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Login Successful!",
+        description: "Redirecting you to the dashboard...",
+      });
+      router.push("/discover");
+    }
   }
 
   useEffect(() => {
@@ -62,6 +83,14 @@ export default function LoginPage() {
       );
     }
   }, []);
+
+  if (authLoading || (user && !authLoading)) { // Show loader if auth is loading or if user is present (will redirect)
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-background to-secondary">
+        <Loader2 className="h-12 w-12 animate-spin text-accent" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-background to-secondary p-6">
@@ -104,8 +133,8 @@ export default function LoginPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6">
-                Log In
+              <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6" disabled={isSubmitting || authLoading}>
+                {isSubmitting ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Log In"}
               </Button>
             </CardContent>
           </form>

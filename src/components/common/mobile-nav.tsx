@@ -3,49 +3,55 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { Flame, Users, MessageSquare, Briefcase, UserCircle2 } from "lucide-react"; // Using UserCircle2 for Settings/Profile
+import { Flame, Users, MessageSquare, Briefcase, UserCircle2 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react"; // Added useEffect and useState
 
 interface NavItem {
   href: string;
   label: string;
   icon: React.ElementType;
-  role?: "seeker" | "recruiter" | "any"; // 'any' means visible to both
+  role?: "seeker" | "recruiter" | "any"; 
 }
 
 const navItems: NavItem[] = [
   { href: "/discover", label: "Discover", icon: Flame, role: "seeker" },
   { href: "/candidates", label: "Candidates", icon: Flame, role: "recruiter" },
   { href: "/matches", label: "Matches", icon: Users, role: "any" },
-  { href: "/chat", label: "Chat", icon: MessageSquare, role: "any" }, // Main chat list, specific chats will be /chat/[id]
+  { href: "/chat", label: "Chat", icon: MessageSquare, role: "any" },
   { href: "/jobs", label: "My Jobs", icon: Briefcase, role: "recruiter" },
-  { href: "/settings", label: "Profile", icon: UserCircle2, role: "any" },
+  { href: "/profile", label: "Profile", icon: UserCircle2, role: "any" }, // Changed href to /profile
 ];
 
-// Simulate user role - in a real app, this would come from auth context
-const MOCK_USER_ROLE: "seeker" | "recruiter" = "seeker"; 
-// To test recruiter view, change above to "recruiter"
 
 export function MobileNav() {
   const pathname = usePathname();
+  const [userRole, setUserRole] = useState<"seeker" | "recruiter">("seeker"); // Default role
+
+  useEffect(() => {
+    // In a real app, this would come from user profile data / AuthContext
+    const storedRole = localStorage.getItem("linderjobs_user_role") as "seeker" | "recruiter";
+    if (storedRole) {
+      setUserRole(storedRole);
+    }
+  }, []);
+
 
   const filteredNavItems = navItems.filter(item => {
-    return item.role === "any" || item.role === MOCK_USER_ROLE;
+    return item.role === "any" || item.role === userRole;
   });
 
-  // Prioritize key actions for the limited slots, ensuring 'Profile/Settings' is usually last or accessible
-  const mainItems = filteredNavItems.filter(item => item.href !== "/settings");
-  const settingsItem = filteredNavItems.find(item => item.href === "/settings");
+  const mainItems = filteredNavItems.filter(item => item.href !== "/profile"); // Changed settings to profile
+  const profileItem = filteredNavItems.find(item => item.href === "/profile"); // Changed settings to profile
   
-  let displayItems = mainItems.slice(0,3); // take first 3 main items
-  if (settingsItem) {
-    displayItems.push(settingsItem); // add settings as the 4th
+  let displayItems = mainItems.slice(0,3); 
+  if (profileItem) {
+    displayItems.push(profileItem); 
   }
-  if (displayItems.length < 4 && mainItems.length > 3) { // if space and more main items exist
+  if (displayItems.length < 4 && mainItems.length > 3) { 
      displayItems.splice(displayItems.length -1, 0, ...mainItems.slice(3, 4 - displayItems.length + 3));
   }
-  displayItems = displayItems.slice(0,4); // ensure max 4 items
+  displayItems = displayItems.slice(0,4); 
 
 
   if (filteredNavItems.length === 0) return null;
@@ -58,11 +64,17 @@ export function MobileNav() {
          `grid-cols-${displayItems.length}`
       )}>
         {displayItems.map((item) => { 
-          const isActive = pathname === item.href || (item.href !== "/settings" && item.href !== "/chat" && pathname.startsWith(item.href));
-          // Special handling for /chat and /chat/[id] to make "Chat" active for both
-          const isChatActive = item.href === "/chat" && (pathname === "/chat" || pathname.startsWith("/chat/"));
-          const finalIsActive = isChatActive || isActive;
+          const isActiveBase = pathname === item.href;
+          // More specific active checks
+          const isActiveDiscover = item.href === "/discover" && pathname.startsWith("/discover");
+          const isActiveCandidates = item.href === "/candidates" && pathname.startsWith("/candidates");
+          const isActiveMatches = item.href === "/matches" && pathname.startsWith("/matches");
+          const isActiveChat = item.href === "/chat" && (pathname === "/chat" || pathname.startsWith("/chat/"));
+          const isActiveJobs = item.href === "/jobs" && (pathname === "/jobs" || pathname.startsWith("/jobs/"));
+          const isActiveProfile = item.href === "/profile" && pathname.startsWith("/profile");
 
+          const finalIsActive = isActiveBase || isActiveDiscover || isActiveCandidates || isActiveMatches || isActiveChat || isActiveJobs || isActiveProfile;
+          
           return (
             <Link key={item.href} href={item.href} legacyBehavior passHref>
               <a className={cn(

@@ -18,9 +18,11 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { useRouter } from "next/navigation";
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react'; // Added useState
 import { gsap } from 'gsap';
 import { Logo } from '@/components/common/logo';
+import { useAuth } from '@/contexts/AuthContext'; // Added useAuth
+import { Loader2 } from 'lucide-react'; // Added Loader2
 
 const SignupFormSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -29,7 +31,7 @@ const SignupFormSchema = z.object({
   confirmPassword: z.string().min(6, "Confirm password must be at least 6 characters."),
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords do not match.",
-  path: ["confirmPassword"], // path to field that will display the error
+  path: ["confirmPassword"], 
 });
 
 type SignupFormValues = z.infer<typeof SignupFormSchema>;
@@ -38,6 +40,8 @@ export default function SignupPage() {
   const { toast } = useToast();
   const router = useRouter();
   const cardRef = useRef<HTMLDivElement>(null);
+  const { signUpWithEmail, user, loading: authLoading } = useAuth(); // Used useAuth
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const form = useForm<SignupFormValues>({
     resolver: zodResolver(SignupFormSchema),
@@ -48,17 +52,42 @@ export default function SignupPage() {
       confirmPassword: "",
     },
   });
+  
+  useEffect(() => {
+    if (user && !authLoading) {
+      router.push("/discover"); // Redirect if already logged in
+    }
+  }, [user, authLoading, router]);
 
-  function onSubmit(data: SignupFormValues) {
-    console.log(data);
-    toast({
-      title: "Account Created!",
-      description: "Welcome to LinderJobs! Redirecting you to onboarding...",
+  async function onSubmit(data: SignupFormValues) {
+    setIsSubmitting(true);
+    const { error } = await signUpWithEmail({
+      email: data.email,
+      password: data.password,
+      options: {
+        data: {
+          full_name: data.fullName, // Example: store full name in user_metadata
+        }
+      }
     });
-    // Simulate API call and redirect
-    setTimeout(() => {
-      router.push("/onboarding");
-    }, 1500);
+    setIsSubmitting(false);
+
+    if (error) {
+      toast({
+        title: "Signup Failed",
+        description: error.message || "An unexpected error occurred. Please try again.",
+        variant: "destructive",
+      });
+    } else {
+      toast({
+        title: "Account Created!",
+        description: "Welcome to LinderJobs! Please check your email to confirm your account, then proceed to onboarding.",
+      });
+      // In a real app with email confirmation, you might redirect to a "check email" page
+      // or directly to login if auto-confirmation is set up.
+      // For now, redirecting to onboarding as before.
+      router.push("/onboarding"); 
+    }
   }
 
   useEffect(() => {
@@ -69,6 +98,14 @@ export default function SignupPage() {
       );
     }
   }, []);
+
+  if (authLoading || (user && !authLoading)) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-background to-secondary">
+        <Loader2 className="h-12 w-12 animate-spin text-accent" />
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-background to-secondary p-6">
@@ -137,8 +174,8 @@ export default function SignupPage() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6">
-                Sign Up
+              <Button type="submit" className="w-full bg-accent text-accent-foreground hover:bg-accent/90 text-lg py-6" disabled={isSubmitting || authLoading}>
+                {isSubmitting ? <Loader2 className="mr-2 h-5 w-5 animate-spin" /> : "Sign Up"}
               </Button>
             </CardContent>
           </form>
