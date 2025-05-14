@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -37,7 +38,7 @@ export default function JobManagementPage() {
           <Briefcase className="h-8 w-8 text-accent" />
           <h1 className="text-3xl font-bold">Manage Job Postings</h1>
         </div>
-        <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 w-full sm:w-auto">
+        <Button asChild className="bg-accent text-accent-foreground hover:bg-accent/90 w-full sm:w-auto shadow-md hover:shadow-lg transition-shadow">
           <Link href="/(app)/jobs/create">
             <PlusCircle className="mr-2 h-5 w-5" /> Create New Job
           </Link>

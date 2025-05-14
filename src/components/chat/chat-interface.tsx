@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from 'react';
@@ -68,14 +69,15 @@ export function ChatInterface({ match, initialMessages, currentUserId }: ChatInt
   }
   
   const getSenderAvatar = (senderId: string) => {
-    if (senderId === currentUserId) return "https://picsum.photos/seed/currentUser/40/40"; // Placeholder for current user
+    // In a real app, current user would have their own avatar
+    if (senderId === currentUserId) return `https://placehold.co/40x40.png?text=Me`; 
     return match.userImageUrl;
   }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] md:h-[calc(100vh-10rem)] bg-card border rounded-lg shadow-md">
-      <div className="p-4 border-b flex items-center space-x-3">
-        <Avatar>
+    <div className="flex flex-col h-[calc(100vh-12rem)] md:h-[calc(100vh-10rem)] bg-card border rounded-lg shadow-xl">
+      <div className="p-4 border-b flex items-center space-x-3 bg-secondary/30 rounded-t-lg">
+        <Avatar className="h-10 w-10 border-2 border-background shadow-sm">
           <AvatarImage src={match.userImageUrl} alt={match.userName} data-ai-hint="person avatar" />
           <AvatarFallback>{match.userName.substring(0,2).toUpperCase()}</AvatarFallback>
         </Avatar>
@@ -94,13 +96,13 @@ export function ChatInterface({ match, initialMessages, currentUserId }: ChatInt
               msg.senderId === currentUserId ? "ml-auto flex-row-reverse space-x-reverse" : ""
             )}
           >
-            <Avatar className="h-8 w-8">
-              <AvatarImage src={getSenderAvatar(msg.senderId)} />
+            <Avatar className="h-8 w-8 shadow-sm">
+              <AvatarImage src={getSenderAvatar(msg.senderId)} data-ai-hint="person avatar" />
               <AvatarFallback>{getSenderInitials(msg.senderId)}</AvatarFallback>
             </Avatar>
             <div
               className={cn(
-                "p-3 rounded-lg shadow",
+                "p-3 rounded-xl shadow-md",
                 msg.senderId === currentUserId
                   ? "bg-accent text-accent-foreground rounded-br-none"
                   : "bg-secondary text-secondary-foreground rounded-bl-none"
@@ -118,7 +120,7 @@ export function ChatInterface({ match, initialMessages, currentUserId }: ChatInt
         ))}
       </ScrollArea>
 
-      <div className="p-4 border-t">
+      <div className="p-4 border-t bg-secondary/30 rounded-b-lg">
         <form onSubmit={handleSendMessage} className="flex items-center space-x-2">
           <Button variant="ghost" size="icon" type="button" className="text-muted-foreground hover:text-accent">
             <Paperclip className="h-5 w-5" />
@@ -129,14 +131,14 @@ export function ChatInterface({ match, initialMessages, currentUserId }: ChatInt
             placeholder="Type a message..."
             value={newMessage}
             onChange={(e) => setNewMessage(e.target.value)}
-            className="flex-1"
+            className="flex-1 shadow-sm"
             aria-label="Chat message input"
           />
           <Button variant="ghost" size="icon" type="button" className="text-muted-foreground hover:text-accent">
             <Smile className="h-5 w-5" />
             <span className="sr-only">Add emoji</span>
           </Button>
-          <Button type="submit" size="icon" className="bg-accent text-accent-foreground hover:bg-accent/90">
+          <Button type="submit" size="icon" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-md hover:shadow-lg transition-shadow">
             <SendHorizonal className="h-5 w-5" />
             <span className="sr-only">Send message</span>
           </Button>

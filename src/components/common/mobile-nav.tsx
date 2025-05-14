@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -24,6 +25,7 @@ const navItems: NavItem[] = [
 
 // Simulate user role - in a real app, this would come from auth context
 const MOCK_USER_ROLE: "seeker" | "recruiter" = "seeker"; 
+// To test recruiter view, change above to "recruiter"
 
 export function MobileNav() {
   const pathname = usePathname();
@@ -32,18 +34,40 @@ export function MobileNav() {
     return item.role === "any" || item.role === MOCK_USER_ROLE;
   });
 
+  // Prioritize key actions for the limited slots, ensuring 'Profile/Settings' is usually last or accessible
+  const mainItems = filteredNavItems.filter(item => item.href !== "/(app)/settings");
+  const settingsItem = filteredNavItems.find(item => item.href === "/(app)/settings");
+  
+  let displayItems = mainItems.slice(0,3); // take first 3 main items
+  if (settingsItem) {
+    displayItems.push(settingsItem); // add settings as the 4th
+  }
+  if (displayItems.length < 4 && mainItems.length > 3) { // if space and more main items exist
+     displayItems.splice(displayItems.length -1, 0, ...mainItems.slice(3, 4 - displayItems.length + 3));
+  }
+  displayItems = displayItems.slice(0,4); // ensure max 4 items
+
+
+  if (filteredNavItems.length === 0) return null;
+
+
   return (
     <nav className="fixed bottom-0 left-0 right-0 z-50 border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 md:hidden">
-      <div className="container mx-auto grid h-16 max-w-lg grid-cols-4 items-center px-0">
-        {/* Max 4-5 items for typical bottom nav. We have 4 for seeker, 5 for recruiter. For recruiter, we might need to adjust or use a "more" menu. For this example, I'll show 4 for seeker and 4 for recruiter if 'My Jobs' is prioritized */}
-        {/* For simplicity, showing all filtered items. Real world needs careful choice or scrollable nav */}
-        {filteredNavItems.slice(0, 4).map((item) => { // Limiting to 4 for this example
-          const isActive = pathname === item.href || (item.href !== "/(app)/settings" && pathname.startsWith(item.href));
+      <div className={cn(
+        "container mx-auto grid h-16 max-w-lg items-center px-0",
+         `grid-cols-${displayItems.length}`
+      )}>
+        {displayItems.map((item) => { 
+          const isActive = pathname === item.href || (item.href !== "/(app)/settings" && item.href !== "/(app)/chat" && pathname.startsWith(item.href));
+          // Special handling for /chat and /chat/[id] to make "Chat" active for both
+          const isChatActive = item.href === "/(app)/chat" && (pathname === "/(app)/chat" || pathname.startsWith("/(app)/chat/"));
+          const finalIsActive = isChatActive || isActive;
+
           return (
             <Link key={item.href} href={item.href} legacyBehavior passHref>
               <a className={cn(
                 "flex flex-col items-center justify-center space-y-1 p-2 text-sm font-medium",
-                isActive ? "text-accent" : "text-muted-foreground hover:text-foreground"
+                finalIsActive ? "text-accent" : "text-muted-foreground hover:text-foreground"
               )}>
                 <item.icon className="h-6 w-6" />
                 <span>{item.label}</span>

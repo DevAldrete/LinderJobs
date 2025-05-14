@@ -5,7 +5,7 @@ import type { Job } from "@/types";
 import { JobListItem } from "./job-list-item";
 import { useState, useEffect, useRef } from "react";
 import { gsap } from 'gsap';
-import { Briefcase } from "lucide-react"; // Changed from BriefcaseIcon
+import { Briefcase } from "lucide-react"; 
 
 interface JobListProps {
   jobs: Job[];

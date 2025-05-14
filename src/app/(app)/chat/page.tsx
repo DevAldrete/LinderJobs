@@ -1,3 +1,4 @@
+
 "use client";
 
 // This page would typically show a list of all active chats, similar to the MatchesPage.
@@ -42,9 +43,9 @@ export default function AllChatsPage() {
       {activeChats.length > 0 ? (
         <MatchList matches={activeChats} />
       ) : (
-         <div className="text-center py-10">
-            <MessageSquareText className="mx-auto h-12 w-12 text-muted-foreground" />
-            <h3 className="mt-2 text-xl font-semibold">No Active Conversations</h3>
+         <div className="text-center py-10 border-2 border-dashed border-muted rounded-xl bg-card shadow-lg">
+            <MessageSquareText className="mx-auto h-16 w-16 text-muted-foreground mb-4" />
+            <h3 className="mt-2 text-xl font-semibold text-card-foreground">No Active Conversations</h3>
             <p className="mt-1 text-sm text-muted-foreground">Start chatting with your matches!</p>
           </div>
       )}

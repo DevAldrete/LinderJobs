@@ -1,10 +1,11 @@
+
 "use client";
 
 import { MatchList } from "@/components/matches/match-list";
 import { placeholderMatches } from "@/lib/placeholder-data";
 import type { Match } from "@/types";
 import { useState, useEffect } from 'react';
-import { Loader2 } from "lucide-react";
+import { Loader2, Users } from "lucide-react";
 
 
 export default function MatchesPage() {
@@ -30,7 +31,10 @@ export default function MatchesPage() {
   
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold">Your Matches</h1>
+      <div className="flex items-center space-x-3">
+         <Users className="h-8 w-8 text-accent" />
+        <h1 className="text-3xl font-bold">Your Matches</h1>
+      </div>
       <MatchList matches={matches} />
     </div>
   );

@@ -24,13 +24,15 @@ import type { Job } from "@/types";
 import { Save } from "lucide-react"; // Added Save icon
 
 const JobPostSchema = z.object({
-  title: z.string().min(5, "Title must be at least 5 characters."),
-  company: z.string().min(2, "Company name must be at least 2 characters."),
-  location: z.string().min(2, "Location is required."),
-  description: z.string().min(50, "Description must be at least 50 characters."),
-  salary: z.string().optional(),
+  title: z.string().min(5, "Title must be at least 5 characters.").max(100, "Title cannot exceed 100 characters."),
+  company: z.string().min(2, "Company name must be at least 2 characters.").max(100, "Company name cannot exceed 100 characters."),
+  location: z.string().min(2, "Location is required.").max(100, "Location cannot exceed 100 characters."),
+  description: z.string().min(50, "Description must be at least 50 characters.").max(5000, "Description cannot exceed 5000 characters."),
+  salary: z.string().optional().refine(val => !val || val.length <= 50, { message: "Salary cannot exceed 50 characters."}),
   type: z.enum(['Full-time', 'Part-time', 'Contract', 'Internship']),
-  tags: z.string().optional(), // Comma-separated
+  tags: z.string().optional().refine(val => !val || val.split(',').every(tag => tag.trim().length > 0 && tag.trim().length <= 30), {
+    message: "Each tag must be between 1 and 30 characters."
+  }).refine(val => !val || val.split(',').length <= 10, { message: "You can add up to 10 tags."}),
 });
 
 type JobPostFormValues = z.infer<typeof JobPostSchema>;
@@ -65,11 +67,14 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
 
   function onSubmit(data: JobPostFormValues) {
     console.log(data); // In real app, send to API
+    // Here you would typically make an API call to save/update the job
+    // For now, we just show a toast and navigate
     toast({
       title: isEditing ? "Job Updated!" : "Job Posted!",
       description: `Job "${data.title}" has been successfully ${isEditing ? 'updated' : 'posted'}.`,
     });
     router.push("/(app)/jobs"); // Navigate to job list
+    router.refresh(); // Force refresh to show updated list if data was server-fetched
   }
 
   return (
@@ -90,7 +95,7 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
                 <FormItem>
                   <FormLabel>Job Title</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Senior Software Engineer" {...field} />
+                    <Input placeholder="e.g., Senior Software Engineer" {...field} className="shadow-sm"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -103,7 +108,7 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
                 <FormItem>
                   <FormLabel>Company Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., Acme Corp" {...field} />
+                    <Input placeholder="e.g., Acme Corp" {...field} className="shadow-sm"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -116,7 +121,7 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., San Francisco, CA or Remote" {...field} />
+                    <Input placeholder="e.g., San Francisco, CA or Remote" {...field} className="shadow-sm"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -130,7 +135,7 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
                   <FormLabel>Job Type</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger>
+                      <SelectTrigger className="shadow-sm">
                         <SelectValue placeholder="Select job type" />
                       </SelectTrigger>
                     </FormControl>
@@ -152,7 +157,7 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
                 <FormItem>
                   <FormLabel>Salary Range (Optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., $100,000 - $120,000 per year" {...field} />
+                    <Input placeholder="e.g., $100,000 - $120,000 per year" {...field} className="shadow-sm"/>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -167,7 +172,7 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
                   <FormControl>
                     <Textarea
                       placeholder="Provide a detailed description of the role, responsibilities, and requirements..."
-                      className="resize-none"
+                      className="resize-none shadow-sm"
                       rows={8}
                       {...field}
                     />
@@ -183,15 +188,15 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
                 <FormItem>
                   <FormLabel>Tags (Optional)</FormLabel>
                   <FormControl>
-                    <Input placeholder="e.g., React, Node.js, Agile, UX" {...field} />
+                    <Input placeholder="e.g., React, Node.js, Agile, UX" {...field} className="shadow-sm"/>
                   </FormControl>
-                  <FormDescription>Comma-separated list of relevant skills or keywords.</FormDescription>
+                  <FormDescription>Comma-separated list of relevant skills or keywords (max 10 tags, 30 chars per tag).</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </CardContent>
-          <CardFooter className="flex justify-end">
+          <CardFooter className="flex justify-end pt-4">
             <Button type="submit" size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-md hover:shadow-lg transition-shadow">
               <Save className="mr-2 h-5 w-5" />
               {isEditing ? "Save Changes" : "Post Job"}

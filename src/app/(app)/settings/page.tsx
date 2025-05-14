@@ -8,10 +8,23 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { LogOut, Bell, Shield } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SettingsPage() {
   // This would typically load user data to pre-fill the ProfileForm
   // const user = useUser(); // example custom hook
+  const router = useRouter();
+  const { toast } = useToast();
+
+  const handleLogout = () => {
+    // Simulate logout
+    toast({
+      title: "Logged Out",
+      description: "You have been successfully logged out.",
+    });
+    router.push("/login");
+  };
 
   return (
     <div className="space-y-8 max-w-3xl mx-auto">
@@ -45,7 +58,7 @@ export default function SettingsPage() {
             </div>
           </CardContent>
           <CardFooter className="border-t pt-6">
-             <Button variant="destructive" className="w-full sm:w-auto shadow-md hover:shadow-lg">
+             <Button variant="destructive" onClick={handleLogout} className="w-full sm:w-auto shadow-md hover:shadow-lg">
               <LogOut className="mr-2 h-4 w-4" /> Log Out
             </Button>
           </CardFooter>

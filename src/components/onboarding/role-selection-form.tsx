@@ -4,7 +4,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { useRouter } from "next/navigation"; // Changed from 'next/navigation'
+import { useRouter } from "next/navigation"; 
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -37,7 +37,12 @@ export function RoleSelectionForm() {
   });
 
   function onSubmit(data: RoleSelectionFormValues) {
-    // In a real app, save this to user profile
+    // In a real app, save this to user profile/localStorage
+    // For demo purposes, we can store it in localStorage to simulate persistence for MobileNav
+    if (typeof window !== "undefined") {
+      localStorage.setItem("linderjobs_user_role", data.role);
+    }
+
     toast({
       title: "Role Selected",
       description: `You've selected the role: ${data.role === 'seeker' ? 'Job Seeker' : 'Recruiter'}.`,
@@ -96,7 +101,7 @@ export function RoleSelectionForm() {
               )}
             />
           </CardContent>
-          <CardFooter className="flex justify-end">
+          <CardFooter className="flex justify-end pt-4">
             <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg transition-shadow">
               Next <ArrowRight className="ml-2 h-4 w-4" />
             </Button>

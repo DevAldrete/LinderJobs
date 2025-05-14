@@ -1,3 +1,4 @@
+
 "use client";
 
 import { JobPostForm } from "@/components/jobs/job-post-form";
