@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -45,7 +46,7 @@ export function RoleSelectionForm() {
   }
 
   return (
-    <Card className="w-full shadow-xl">
+    <Card className="w-full shadow-xl hover:shadow-2xl transition-shadow duration-300">
       <CardHeader>
         <CardTitle className="text-2xl">Choose Your Role</CardTitle>
         <CardDescription>Are you looking for a job, or hiring talent?</CardDescription>
@@ -70,7 +71,7 @@ export function RoleSelectionForm() {
                         </FormControl>
                         <FormLabel
                           htmlFor="seeker"
-                          className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-6 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-accent [&:has([data-state=checked])]:bg-accent [&:has([data-state=checked])]:text-accent-foreground cursor-pointer transition-colors"
+                          className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-6 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-accent [&:has([data-state=checked])]:bg-accent [&:has([data-state=checked])]:text-accent-foreground cursor-pointer transition-all duration-200 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg [&:has([data-state=checked])]:shadow-xl"
                         >
                           <UserSearch className="mb-3 h-8 w-8" />
                           Job Seeker
@@ -82,7 +83,7 @@ export function RoleSelectionForm() {
                         </FormControl>
                         <FormLabel
                           htmlFor="recruiter"
-                           className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-6 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-accent [&:has([data-state=checked])]:bg-accent [&:has([data-state=checked])]:text-accent-foreground cursor-pointer transition-colors"
+                           className="flex flex-col items-center justify-center rounded-md border-2 border-muted bg-popover p-6 hover:bg-accent hover:text-accent-foreground [&:has([data-state=checked])]:border-accent [&:has([data-state=checked])]:bg-accent [&:has([data-state=checked])]:text-accent-foreground cursor-pointer transition-all duration-200 ease-in-out transform hover:scale-105 shadow-md hover:shadow-lg [&:has([data-state=checked])]:shadow-xl"
                         >
                           <Briefcase className="mb-3 h-8 w-8" />
                           Recruiter
@@ -96,7 +97,7 @@ export function RoleSelectionForm() {
             />
           </CardContent>
           <CardFooter className="flex justify-end">
-            <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90">
+            <Button type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 shadow-md hover:shadow-lg transition-shadow">
               Next <ArrowRight className="ml-2 h-4 w-4" />
             </Button>
           </CardFooter>

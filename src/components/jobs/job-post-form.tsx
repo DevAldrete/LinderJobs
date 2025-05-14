@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +21,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import type { Job } from "@/types";
+import { Save } from "lucide-react"; // Added Save icon
 
 const JobPostSchema = z.object({
   title: z.string().min(5, "Title must be at least 5 characters."),
@@ -71,7 +73,7 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
   }
 
   return (
-    <Card className="w-full shadow-xl">
+    <Card className="w-full shadow-xl hover:shadow-2xl transition-shadow duration-300">
       <CardHeader>
         <CardTitle className="text-2xl">{isEditing ? "Edit Job Posting" : "Create New Job Posting"}</CardTitle>
         <CardDescription>
@@ -190,7 +192,8 @@ export function JobPostForm({ initialData, jobId }: JobPostFormProps) {
             />
           </CardContent>
           <CardFooter className="flex justify-end">
-            <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button type="submit" size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-md hover:shadow-lg transition-shadow">
+              <Save className="mr-2 h-5 w-5" />
               {isEditing ? "Save Changes" : "Post Job"}
             </Button>
           </CardFooter>

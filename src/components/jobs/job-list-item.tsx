@@ -1,3 +1,4 @@
+
 "use client";
 
 import Link from "next/link";
@@ -50,7 +51,7 @@ export function JobListItem({ job, onDelete }: JobListItemProps) {
 
 
   return (
-    <Card className="shadow-md hover:shadow-lg transition-shadow">
+    <Card className="shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out h-full flex flex-col">
       <CardHeader>
         <div className="flex justify-between items-start">
           <div>
@@ -61,34 +62,35 @@ export function JobListItem({ job, onDelete }: JobListItemProps) {
               <MapPin className="inline-block w-4 h-4 mr-1.5 -mt-0.5" />{job.location}
             </CardDescription>
           </div>
-           <Badge variant={job.type === "Full-time" ? "default" : "secondary"} className={job.type === "Full-time" ? "bg-accent text-accent-foreground" : ""}>{job.type}</Badge>
+           <Badge variant={job.type === "Full-time" ? "default" : "secondary"} className={`${job.type === "Full-time" ? "bg-accent text-accent-foreground" : ""} whitespace-nowrap`}>{job.type}</Badge>
         </div>
       </CardHeader>
-      <CardContent className="space-y-2">
-        <p className="text-sm text-foreground line-clamp-2">{job.description}</p>
+      <CardContent className="space-y-2 flex-grow">
+        <p className="text-sm text-foreground line-clamp-3">{job.description}</p>
         {job.tags && job.tags.length > 0 && (
           <div className="flex flex-wrap gap-1.5 mt-1">
             {job.tags.slice(0, 3).map(tag => (
               <Badge key={tag} variant="outline" className="text-xs">{tag}</Badge>
             ))}
+            {job.tags.length > 3 && <Badge variant="outline" className="text-xs">+{job.tags.length - 3} more</Badge>}
           </div>
         )}
          <p className="text-xs text-muted-foreground pt-1">Posted: {postedDateAgo}</p>
       </CardContent>
-      <CardFooter className="flex justify-between items-center">
+      <CardFooter className="flex flex-col sm:flex-row justify-between items-center gap-3 sm:gap-0 pt-4 mt-auto">
         <div className="flex items-center text-sm text-muted-foreground">
           <Users className="w-4 h-4 mr-1.5" />
           <span>{Math.floor(Math.random() * 50) + 1} Applicants</span> {/* Placeholder */}
         </div>
-        <div className="space-x-2">
-          <Button variant="outline" size="sm" asChild>
+        <div className="flex space-x-2 w-full sm:w-auto">
+          <Button variant="outline" size="sm" asChild className="flex-1 sm:flex-none">
             <Link href={`/(app)/jobs/${job.id}/edit`}>
               <Edit3 className="w-4 h-4 mr-1.5" /> Edit
             </Link>
           </Button>
            <AlertDialog>
             <AlertDialogTrigger asChild>
-              <Button variant="destructive" size="sm">
+              <Button variant="destructive" size="sm" className="flex-1 sm:flex-none">
                 <Trash2 className="w-4 h-4 mr-1.5" /> Delete
               </Button>
             </AlertDialogTrigger>

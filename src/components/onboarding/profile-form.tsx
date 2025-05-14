@@ -1,3 +1,4 @@
+
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,7 +19,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
-import { Upload } from "lucide-react";
+import { Upload, Rocket } from "lucide-react"; // Added Rocket for button
 
 const ProfileFormSchema = z.object({
   fullName: z.string().min(2, "Full name must be at least 2 characters."),
@@ -61,7 +62,7 @@ export function ProfileForm() {
   }
 
   return (
-    <Card className="w-full shadow-xl">
+    <Card className="w-full shadow-xl hover:shadow-2xl transition-shadow duration-300">
       <CardHeader>
         <CardTitle className="text-2xl">Complete Your Profile</CardTitle>
         <CardDescription>Tell us a bit about yourself to get started.</CardDescription>
@@ -105,7 +106,7 @@ export function ProfileForm() {
                     <span className="h-20 w-20 rounded-full bg-muted flex items-center justify-center text-muted-foreground">
                       <Upload className="h-8 w-8" />
                     </span>
-                    <Button type="button" variant="outline">Upload Image</Button>
+                    <Button type="button" variant="outline" className="shadow-sm hover:shadow-md">Upload Image</Button>
                   </div>
                 </FormControl>
                 <FormDescription>
@@ -150,7 +151,8 @@ export function ProfileForm() {
             {/* Add more fields like experience, education, portfolio link etc. based on seeker/recruiter */}
           </CardContent>
           <CardFooter className="flex justify-end">
-            <Button type="submit" className="bg-accent text-accent-foreground hover:bg-accent/90">
+            <Button type="submit" size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90 shadow-md hover:shadow-lg transition-shadow">
+              <Rocket className="mr-2 h-5 w-5" />
               Finish Setup & Start Swiping
             </Button>
           </CardFooter>
