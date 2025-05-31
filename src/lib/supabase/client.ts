@@ -3,8 +3,8 @@ import { createClient, type SupabaseClient } from '@supabase/supabase-js';
 
 // Use placeholder values that will be replaced by the user.
 // It's recommended to use environment variables for these in a real application.
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://<SUPABASE_URL>.supabase.co';
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '<ANON_KEY>';
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseAnonKey = process.env.ANON_KEY;
 
 // Declare a global variable for the Supabase client to enable caching.
 declare global {
